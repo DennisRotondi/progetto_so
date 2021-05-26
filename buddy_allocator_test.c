@@ -32,31 +32,18 @@ int main(int argc, char** argv) {
 
   *p1=50000;
   *p3=90000;
+  *p4=1000;
+  *p5=80000;
 
   printf("p1 \tp2 \tp3 \tp4 \tp5\n");
   printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
   printf("%d \t%d \t%d \t%d \t%d\n",*p1,*p2,*p3,*p4,*p5);
-  return 0;
-  // //1 we see if we have enough memory for the buffers
-  // int req_size=BuddyAllocator_calcSize(BUDDY_LEVELS);
-  // printf("size requested for initialization: %d/BUFFER_SIZE\n", req_size);
 
-  // //2 we initialize the allocator
-  // printf("init... ");
-  // BuddyAllocator_init(&alloc, BUDDY_LEVELS,
-  //                     buffer,
-  //                     BUFFER_SIZE,
-  //                     memory,
-  //                     MIN_BUCKET_SIZE);
-  // printf("DONE\n");
-
- 
-  // BuddyAllocator_free(&alloc, p1);
-  // BuddyAllocator_free(&alloc, p2);
-  // BuddyAllocator_free(&alloc, p3);
-  // void* p5=BuddyAllocator_malloc(&alloc, 100000000);
-  // printf("%d\n",p5);
- 
+  BuddyAllocator_free(&alloc, p4);
+  BuddyAllocator_free(&alloc, p5);
+  BuddyAllocator_free(&alloc, p1);
+  BuddyAllocator_free(&alloc, p2);
+  BuddyAllocator_free(&alloc, p3); 
 } 
 /*
   int bit_num=0;
