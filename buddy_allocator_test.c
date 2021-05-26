@@ -12,26 +12,27 @@ char memory[MEMORY_SIZE];
 BuddyAllocator alloc;
 int main(int argc, char** argv) {
 
-  //1 we see if we have enough memory for the buffers
-  int req_size=BuddyAllocator_calcSize(BUDDY_LEVELS);
-  printf("size requested for initialization: %d/BUFFER_SIZE\n", req_size);
+  return 0;
+  // //1 we see if we have enough memory for the buffers
+  // int req_size=BuddyAllocator_calcSize(BUDDY_LEVELS);
+  // printf("size requested for initialization: %d/BUFFER_SIZE\n", req_size);
 
-  //2 we initialize the allocator
-  printf("init... ");
-  BuddyAllocator_init(&alloc, BUDDY_LEVELS,
-                      buffer,
-                      BUFFER_SIZE,
-                      memory,
-                      MIN_BUCKET_SIZE);
-  printf("DONE\n");
+  // //2 we initialize the allocator
+  // printf("init... ");
+  // BuddyAllocator_init(&alloc, BUDDY_LEVELS,
+  //                     buffer,
+  //                     BUFFER_SIZE,
+  //                     memory,
+  //                     MIN_BUCKET_SIZE);
+  // printf("DONE\n");
 
-  void* p1=BuddyAllocator_malloc(&alloc, 100);
-  void* p2=BuddyAllocator_malloc(&alloc, 100);
-  void* p3=BuddyAllocator_malloc(&alloc, 100000);
-  BuddyAllocator_free(&alloc, p1);
-  BuddyAllocator_free(&alloc, p2);
-  BuddyAllocator_free(&alloc, p3);
-  void* p5=BuddyAllocator_malloc(&alloc, 100000000);
-  printf("%d\n",p5);
+  // void* p1=BuddyAllocator_malloc(&alloc, 100);
+  // void* p2=BuddyAllocator_malloc(&alloc, 100);
+  // void* p3=BuddyAllocator_malloc(&alloc, 100000);
+  // BuddyAllocator_free(&alloc, p1);
+  // BuddyAllocator_free(&alloc, p2);
+  // BuddyAllocator_free(&alloc, p3);
+  // void* p5=BuddyAllocator_malloc(&alloc, 100000000);
+  // printf("%d\n",p5);
  
 }

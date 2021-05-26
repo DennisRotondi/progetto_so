@@ -7,7 +7,7 @@ int BitMap_getBytes(int bits){
 }
 
 // initializes a bitmap on an external array
-void BitMap_init(BitMap* bit_map, int num_bits, uint8_t* buffer){
+void BitMap_init(BitMap* bit_map, int num_bits, uint8_t* buffer){ //uint8_t è un byte.
   bit_map->buffer=buffer;
   bit_map->num_bits=num_bits;
   bit_map->buffer_size=BitMap_getBytes(num_bits);
