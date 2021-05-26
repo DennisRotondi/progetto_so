@@ -7,6 +7,7 @@ typedef struct  {
   BitMap bitmap;
   int num_levels;
   char* buffer; // the buffer area to be managed
+  int buffer_size;
   int min_bucket_size; // the minimum page of RAM that can be returned
 } BuddyAllocator;
 
