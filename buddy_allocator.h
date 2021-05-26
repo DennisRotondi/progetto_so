@@ -6,20 +6,19 @@
 typedef struct  {
   BitMap bitmap;
   int num_levels;
-  uint8_t* memory; // the memory area to be managed
+  char* buffer; // the buffer area to be managed
   int min_bucket_size; // the minimum page of RAM that can be returned
 } BuddyAllocator;
 
-
-// computes the size in bytes for the buffer of the allocator
-int BuddyAllocator_calcSize(int num_levels);
-
+// int BuddyAllocator_calcSize(int num_levels);
 
 // initializes the buddy allocator, and checks that the buffer is large enough
 void BuddyAllocator_init(BuddyAllocator* alloc,
                          int num_levels,                         
-                         uint8_t* memory,
-                         int memory_size,
+                         char* buffer, //buffer per l'allocator
+                         int buffer_size, 
+                         char* buffer_bitmap, //buffer per la bitmap
+                         int buffer_bitmap_size,                                                 
                          int min_bucket_size);
 
 //allocates memory

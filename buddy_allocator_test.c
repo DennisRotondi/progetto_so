@@ -1,16 +1,40 @@
 #include "buddy_allocator.h"
 #include <stdio.h>
 
-#define BUFFER_SIZE 102400
+#define BUFFER_SIZE 1024*1024
 #define BUDDY_LEVELS 9
-#define MEMORY_SIZE (1024*1024)
-#define MIN_BUCKET_SIZE (MEMORY_SIZE>>(BUDDY_LEVELS))
+#define MEMORY_SIZE 128
+#define MIN_BUCKET_SIZE (BUFFER_SIZE>>BUDDY_LEVELS)
 
-char buffer[BUFFER_SIZE]; // 100 Kb buffer to handle memory should be enough
-char memory[MEMORY_SIZE];
+char buffer[BUFFER_SIZE]; 
+char memory[MEMORY_SIZE]; // per la bitmap
 
 BuddyAllocator alloc;
 int main(int argc, char** argv) {
+
+  
+
+
+  BuddyAllocator_init(&alloc,
+                      BUDDY_LEVELS,                         
+                      buffer, //buffer per l'allocator
+                      BUFFER_SIZE, 
+                      memory, //buffer per la bitmap
+                      MEMORY_SIZE,                                                 
+                      MIN_BUCKET_SIZE);
+
+  // uint8_t buffer[4] = {0};
+  // BitMap bitmap;
+  // BitMap_init(&bitmap,32,buffer);
+  // printab(&bitmap);
+  // BitMap_setBit(&bitmap,0,1);
+  // BitMap_setBit(&bitmap,8,1);
+  // BitMap_setBit(&bitmap,16,1);
+  // BitMap_setBit(&bitmap,24,1);
+  // printab(&bitmap);
+  
+  // BitMap_setBit(&bitmap,0,0);
+  // printab(&bitmap);
 
   return 0;
   // //1 we see if we have enough memory for the buffers
@@ -35,4 +59,23 @@ int main(int argc, char** argv) {
   // void* p5=BuddyAllocator_malloc(&alloc, 100000000);
   // printf("%d\n",p5);
  
-}
+} 
+/*
+  int bit_num=0;
+  int byte_num=bit_num>>3;
+  int a=1&0x07;
+  int b=2&0x07;
+  int c=3&0x07;
+  int d=4&0x07;
+  int e=9&0x07;
+  printf("%d %d %d %d %d\n",a, b,c,d,e);
+  
+  000 2^0
+  001 2^1
+  010 2^2
+  011 2^3
+  100 2^4
+  101 2^5
+  110 2^6
+  111 2^7  
+*/
