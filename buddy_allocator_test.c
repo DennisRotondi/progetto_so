@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #define BUFFER_SIZE 256
-#define BUDDY_LEVELS 3
+#define BUDDY_LEVELS 5
 #define MEMORY_SIZE 128
 #define MIN_BUCKET_SIZE (BUFFER_SIZE>>BUDDY_LEVELS)
 
@@ -20,12 +20,22 @@ int main(int argc, char** argv) {
                       MEMORY_SIZE,                                                 
                       MIN_BUCKET_SIZE);
 
-  void* p1=BuddyAllocator_malloc(&alloc, 27);
-  void* p2=BuddyAllocator_malloc(&alloc, 27);
-  void* p3=BuddyAllocator_malloc(&alloc, 27);
-  void* p4=BuddyAllocator_malloc(&alloc, 27);
+  int* p1=BuddyAllocator_malloc(&alloc, sizeof(int));
+  int* p2=BuddyAllocator_malloc(&alloc, sizeof(int));
+  int* p3=BuddyAllocator_malloc(&alloc, sizeof(int));
+  int* p4=BuddyAllocator_malloc(&alloc, sizeof(int));
+  int* p5=BuddyAllocator_malloc(&alloc, sizeof(int));
 
-  printf("%p %p %p %p\n",p1,p2,p3,p4);
+  printf("p1 \tp2 \tp3 \tp4 \tp5\n");
+  printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
+  printf("%d \t%d \t%d \t%d \t%d\n",*p1,*p2,*p3,*p4,*p5);
+
+  *p1=50000;
+  *p3=90000;
+
+  printf("p1 \tp2 \tp3 \tp4 \tp5\n");
+  printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
+  printf("%d \t%d \t%d \t%d \t%d\n",*p1,*p2,*p3,*p4,*p5);
   return 0;
   // //1 we see if we have enough memory for the buffers
   // int req_size=BuddyAllocator_calcSize(BUDDY_LEVELS);

@@ -4,6 +4,8 @@
 #include "buddy_allocator.h"
 #include "bit_map.h"
 
+
+#define TEST 1
 // these are trivial helpers to support you in case you want
 // to do a bitmap implementation
 int levelIdx(size_t idx){
@@ -18,7 +20,7 @@ int buddyIdx(int idx){
 }
 
 int parentIdx(int idx){
-  return idx/2;
+  return (idx-1)/2;
 }
 //ritorna l'offset dal primo livello
 int startIdx(int idx){
@@ -32,20 +34,16 @@ int firstIdx(int lvl){
 void print_bitmap(BitMap* bit_map){
   int to_print=1;
   int remain_to_print=1;
-
   for(int i = 0; i<bit_map->num_bits;i++){  
     remain_to_print--;
     printf("%d ",BitMap_bit(bit_map,i));
-
     if(remain_to_print==0){
       printf("\n");
       to_print*=2;
       remain_to_print=to_print;
-    }
-    
+    }    
   }
-  printf("\n");
-  
+  printf("\n");  
 }
 
 void BuddyAllocator_init(BuddyAllocator* alloc,
@@ -61,7 +59,7 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
   alloc->buffer = buffer;
   alloc->buffer_size = buffer_size;
 
-  assert(min_bucket_size>8);
+  assert(min_bucket_size>=8); //troppo piccolo altrimenti
   alloc->min_bucket_size=min_bucket_size;
 
   assert(num_levels<MAX_LEVELS);
@@ -83,7 +81,7 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
 };
 
 void mark_all_parents(BitMap* bit_map, int bit_num, int status){
-  printf("sto lavorando con il bit %d\n",bit_num);
+  printf("sto lavorando con il bit padre %d\n",bit_num);
   if(bit_num==0){
     BitMap_setBit(bit_map, bit_num, status);
   }
@@ -94,7 +92,8 @@ void mark_all_parents(BitMap* bit_map, int bit_num, int status){
 }
 
 void mark_all_children(BitMap* bit_map, int bit_num, int status){
-  if(bit_num*2+2<=bit_map->num_bits){
+  printf("sto lavorando con il bit figlio %d\n",bit_num);
+  if(bit_num<bit_map->num_bits){
     BitMap_setBit(bit_map, bit_num, status);
     mark_all_children(bit_map, bit_num*2+1, status);
     mark_all_children(bit_map, bit_num*2+2, status);
@@ -113,14 +112,14 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
   assert(alloc->buffer_size > size);
 
   for(int i = 0; i<alloc->num_levels; i++){
-    if(size_start>size) break;
+    if(size_start>=size) break;
     else{
       size_start*=2;
       lv_new_block--; //sto salendo di livello
     }
   }
 
-  printf("Provo ad allocare il nuovo blocco di size %d al livello %d\n", size,lv_new_block);
+  printf("#### Provo ad allocare il nuovo blocco di size %d al livello %d ####\n", size,lv_new_block);
 
   //scandire da firstidx del livello 
   int free_idx=-1;
@@ -136,11 +135,11 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
   assert(free_idx>-1);
 
   mark_all_parents(&bitmap, free_idx , 1);
+  print_bitmap(&bitmap);
   mark_all_children(&bitmap, free_idx ,1);
-
   print_bitmap(&bitmap);
 
-  return (void*) (&(alloc->buffer[free_idx]) + sizeof(int));
+  return (void*) (alloc->buffer +free_idx*alloc->min_bucket_size + sizeof(int));
 }
 // //releases allocated memory
 // void BuddyAllocator_free(BuddyAllocator* alloc, void* mem) {
