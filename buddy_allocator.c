@@ -4,8 +4,8 @@
 #include "buddy_allocator.h"
 #include "bit_map.h"
 
-// these are trivial helpers to support you in case you want
-// to do a bitmap implementation, leggermente modificate perché usata la convenzione lvl 0 ha radice di indice 0
+// these are trivial helpers to support you in case you want to do a bitmap implementation
+// leggermente modificate perché usata la convenzione lvl 0 ha radice di indice 0
 int levelIdx(int idx){
   return (int)floor(log2(idx + 1)); //se indice 1 è al livello 1, se 3 è al livello 2 etc
 }
