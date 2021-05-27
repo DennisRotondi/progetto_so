@@ -155,8 +155,7 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size){
 
   mark_all_parents(&alloc->bitmap, free_idx, 1);
   mark_all_children(&alloc->bitmap, free_idx, 1);
-  //devo generare l'indirizzo da restituire
-  //salvo l'indice così poi che potrò farne la free facilmente
+  //devo generare l'indirizzo da restituire, salvo l'indice così poi che potrò farne la free facilmente
   char *da_restituire = alloc->buffer + startIdx(free_idx) * size_start;
   ((int *)da_restituire)[0] = free_idx;
   printf("sto restituendo con indice %d il puntatore %p\n", free_idx, da_restituire + sizeof(int));
