@@ -70,7 +70,6 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
                          int buffer_bitmap_size,
                          int min_bucket_size)
 {
-
   //generazione numero di bit per la bit_map, ogni bit è un buddy di minbucket size
   int num_bits = (1 << (num_levels + 1)) - 1;
   // we need room also for level 0
@@ -146,7 +145,6 @@ void merge_buddies(BitMap *bitmap, int idx)
 
 void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size)
 {
-
   size += sizeof(int); //sizeof(int) byte vengono usati per salvare l'indice della bitmap
   if (alloc->buffer_size < size)
   {
@@ -200,7 +198,6 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size)
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem)
 {
-
   printf("\nFreeing %p\n", mem);
   // we retrieve the buddy from the system
   int *p = (int *)mem;
