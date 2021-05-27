@@ -1,7 +1,7 @@
 #include "buddy_allocator.h"
 #include <stdio.h>
 
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 260
 #define BUDDY_LEVELS 5
 #define MEMORY_SIZE 128
 #define MIN_BUCKET_SIZE (BUFFER_SIZE>>BUDDY_LEVELS)
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
   int* p5=BuddyAllocator_malloc(&alloc, sizeof(int));
 
  
-  printf("p1 \tp2 \tp3 \tp4 \tp5\n");
+  printf("\np1 \tp2 \tp3 \tp4 \tp5\n");
   printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
   printf("%d %d %d\t%d \t%d \t%d \t%d\n",p1[0],p1[1],p1[2],*p2,*p3,*p4,*p5);
 
@@ -42,8 +42,6 @@ int main(int argc, char** argv) {
   printf("\np1 \tp2 \tp3 \tp4 \tp5\n");
   printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
   printf("%d %d %d\t%d \t%d \t%d \t%d\n",p1[0],p1[1],p1[2],*p2,*p3,*p4,*p5);
-
-  print_bitmap(&alloc.bitmap);
   
   BuddyAllocator_free(&alloc, p4);
   BuddyAllocator_free(&alloc, p5);
