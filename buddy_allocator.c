@@ -137,7 +137,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
     }
   }
 
-  printf("#### Provo ad allocare il nuovo blocco di size %d al livello %d ####\n", size,lv_new_block);
+  printf("####\t Provo ad allocare il nuovo blocco di size %d al livello %d\t ####\n", size,lv_new_block);
 
   //scandire da firstidx del livello 
   int free_idx=-1;
@@ -167,7 +167,7 @@ void merge_buddies(BitMap* bitmap, int idx){
   if(idx==0) return;
   int idx_buddy = buddyIdx(idx);
   if(!BitMap_bit(bitmap,idx_buddy)){
-    printf("#### Sto facendo il merge dei buddy %d %d al livello %d ####\n", idx,idx_buddy,levelIdx(idx));
+    printf("####\t Sto facendo il merge dei buddy %d %d al livello %d \t####\n", idx,idx_buddy,levelIdx(idx));
     int parent_idx = parentIdx(idx);
     BitMap_setBit(bitmap, parent_idx, 0);
     merge_buddies(bitmap,parent_idx);
