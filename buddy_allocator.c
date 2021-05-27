@@ -5,9 +5,8 @@
 #include "bit_map.h"
 
 
-#define TEST 1
 // these are trivial helpers to support you in case you want
-// to do a bitmap implementation
+// to do a bitmap implementation, leggermente modificate perché usata la convenzione lvl 0 ha radice di indice 0
 int levelIdx(size_t idx){
   return (int)floor(log2(idx));
 };
@@ -83,7 +82,7 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
 };
 
 void mark_all_parents(BitMap* bit_map, int bit_num, int status){
-  printf("sto lavorando con il bit padre %d\n",bit_num);
+  // printf("sto lavorando con il bit padre %d\n",bit_num);
   if(bit_num==0){
     BitMap_setBit(bit_map, bit_num, status);
   }
@@ -96,7 +95,7 @@ void mark_all_parents(BitMap* bit_map, int bit_num, int status){
 void mark_all_children(BitMap* bit_map, int bit_num, int status){
   
   if(bit_num<=bit_map->num_bits){
-    printf("sto lavorando con il bit figlio %d\n",bit_num);
+    // printf("sto lavorando con il bit figlio %d\n",bit_num);
     BitMap_setBit(bit_map, bit_num, status);
     mark_all_children(bit_map, bit_num*2+1, status);
     mark_all_children(bit_map, bit_num*2+2, status);
@@ -142,7 +141,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
 
   //salvo l'indice così poi che potrò farne la free facilmente
   *(alloc->buffer + free_idx*alloc->min_bucket_size)=free_idx;
-
+  //ritorno 4 indirizzi più avanti così da avere l'indice protetto.
   return (void*) (alloc->buffer +free_idx*alloc->min_bucket_size + sizeof(int));
 }
 

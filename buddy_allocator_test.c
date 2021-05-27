@@ -6,8 +6,8 @@
 #define MEMORY_SIZE 128
 #define MIN_BUCKET_SIZE (BUFFER_SIZE>>BUDDY_LEVELS)
 
-char buffer[BUFFER_SIZE] = {0}; //inizializzo a 0
-char memory[MEMORY_SIZE] = {0}; // per la bitmap
+char buffer[BUFFER_SIZE];
+char memory[MEMORY_SIZE]; // per la bitmap
 
 BuddyAllocator alloc;
 int main(int argc, char** argv) {
@@ -48,12 +48,17 @@ int main(int argc, char** argv) {
   BuddyAllocator_free(&alloc, p3); 
 
   //alloco in ordine inverso
-  p5=BuddyAllocator_malloc(&alloc, sizeof(int));
+  
   p1=BuddyAllocator_malloc(&alloc, sizeof(int)*9);
   p2=BuddyAllocator_malloc(&alloc, sizeof(int));
+  p5=BuddyAllocator_malloc(&alloc, sizeof(int));
   p3=BuddyAllocator_malloc(&alloc, sizeof(int)*12); //20 + 4
   p4=BuddyAllocator_malloc(&alloc, sizeof(int));
-  
+
+  BuddyAllocator_free(&alloc, p4);
+  BuddyAllocator_free(&alloc, p1);
+  BuddyAllocator_free(&alloc, p2);
+  BuddyAllocator_free(&alloc, p3);   
 } 
 /*
   int bit_num=0;
