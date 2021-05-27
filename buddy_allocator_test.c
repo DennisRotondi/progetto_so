@@ -19,13 +19,21 @@ int main(int argc, char** argv) {
                       memory, //buffer per la bitmap
                       MEMORY_SIZE,                                                 
                       MIN_BUCKET_SIZE);
-
+  
   int* p1=BuddyAllocator_malloc(&alloc, sizeof(int)*3);
+  printf("test interno ##########################\n");
+  print_bitmap(&alloc.bitmap);
   int* p2=BuddyAllocator_malloc(&alloc, sizeof(int));
+  printf("test interno ##########################\n");
+  print_bitmap(&alloc.bitmap);
   int* p3=BuddyAllocator_malloc(&alloc, sizeof(int)); //20 + 4
+  printf("test interno ##########################\n");
+  print_bitmap(&alloc.bitmap);
   int* p4=BuddyAllocator_malloc(&alloc, sizeof(int));
+  printf("test interno ##########################\n");
+  print_bitmap(&alloc.bitmap);
   int* p5=BuddyAllocator_malloc(&alloc, sizeof(int));
-
+  return;
   printf("p1 \tp2 \tp3 \tp4 \tp5\n");
   printf("%p \t%p \t%p \t%p \t%p\n",p1,p2,p3,p4,p5);
   printf("%d %d %d\t%d \t%d \t%d \t%d\n",p1[0],p1[1],p1[2],*p2,*p3,*p4,*p5);
@@ -65,9 +73,9 @@ int main(int argc, char** argv) {
 
   p4=BuddyAllocator_malloc(&alloc, 10000000); //fallirà
   p1=BuddyAllocator_malloc(&alloc, 200); 
-  // p3=BuddyAllocator_malloc(&alloc, 8); //fallirà
-  // BuddyAllocator_free(&alloc, p1);
-  // p3=BuddyAllocator_malloc(&alloc, 8);
+  p3=BuddyAllocator_malloc(&alloc, 8); //fallirà
+  BuddyAllocator_free(&alloc, p1);
+  p3=BuddyAllocator_malloc(&alloc, 8);
   // // printf("test interno prima alloc\n");
   // // printf("test interno primo fail\n");
   // // print_bitmap(&alloc.bitmap);
@@ -83,8 +91,6 @@ int main(int argc, char** argv) {
   // // // printf("test interno terza alloc\n");
   // // // print_bitmap(&alloc.bitmap);
   // p2=BuddyAllocator_malloc(&alloc, 100); //fallirà
-  // // printf("test interno terzo fail\n");
-  // // print_bitmap(&alloc.bitmap);
   // p5=BuddyAllocator_malloc(&alloc, 100); //fallirà
   // // printf("test interno quarto fail\n");
   // // print_bitmap(&alloc.bitmap);

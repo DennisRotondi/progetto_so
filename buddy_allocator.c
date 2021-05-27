@@ -138,7 +138,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
   if(alloc->buffer_size < size){
     printf("\nIl blocco è più grande di tutta la memoria disponibile\n");
     // print_bitmap(&alloc->bitmap);
-    return (void*)NULL;
+    return NULL;
   }
 
   for(int i = 0; i<alloc->num_levels; i++){
@@ -180,10 +180,14 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
   //devo generare l'indirizzo da restituire
   //salvo l'indice così poi che potrò farne la free facilmente
   printf("%d offset\n",startIdx(free_idx));
-  char* da_restituire= &alloc->buffer + startIdx(free_idx) * size_start;
-  ((int*)da_restituire)[0]=free_idx;
+  return NULL;
+  char* da_restituire = & (alloc->buffer[startIdx(free_idx) * size_start]);
+  int* da_restituire_2=(int*) da_restituire;
+  da_restituire_2[0]=free_idx;
+  
+  printf("sto restituendo con indice %d il puntatore %p\n", free_idx, da_restituire);
   //ritorno 4 indirizzi più avanti così da avere l'indice protetto.
-  return (void*)(da_restituire + sizeof(int));
+  return (void*)(&da_restituire_2[1]);
 }
 
 //releases allocated memory
