@@ -12,7 +12,7 @@ typedef struct  {
 } BuddyAllocator;
 
 // int BuddyAllocator_calcSize(int num_levels);
-
+void print_bitmap(BitMap* bit_map);
 // initializes the buddy allocator, and checks that the buffer is large enough
 void BuddyAllocator_init(BuddyAllocator* alloc,
                          int num_levels,                         

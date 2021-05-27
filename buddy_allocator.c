@@ -7,7 +7,7 @@
 
 // these are trivial helpers to support you in case you want
 // to do a bitmap implementation, leggermente modificate perché usata la convenzione lvl 0 ha radice di indice 0
-int levelIdx(size_t idx){
+int levelIdx(int idx){
   return (int)floor(log2(idx+1)); //se indice 1 è al livello 1, se 3 è al livello 2 etc 
 };
 
@@ -37,7 +37,7 @@ void print_bitmap(BitMap* bit_map){
   int to_print=1;
   int remain_to_print=0;
   int lvl=-1;
-  int tot_lvls= levelIdx(bit_map->num_bits);
+  int tot_lvls= levelIdx(bit_map->num_bits)-1;
   
   for(int i = 0; i<bit_map->num_bits;i++){
     if(remain_to_print==0 && i!=((bit_map->num_bits)-1)){
@@ -91,7 +91,7 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
   printf("\tbits_bitmap: %d\n", num_bits);
   printf("\tbitmap memory %d bytes usati di %d bytes forniti \n",BitMap_getBytes(num_bits), buffer_bitmap_size);
 
-  BitMap_init(&alloc->bitmap, num_bits, buffer);
+  BitMap_init(&alloc->bitmap, num_bits, buffer_bitmap);
   print_bitmap(&alloc->bitmap);
 };
 
@@ -174,20 +174,15 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
   // print_bitmap(&bitmap);
   mark_all_children(&alloc->bitmap, free_idx ,1);
 
-  printf("Bitmap dopo l'allocazione\n");
-  print_bitmap(&alloc->bitmap);
-
   //devo generare l'indirizzo da restituire
   //salvo l'indice così poi che potrò farne la free facilmente
-  printf("%d offset\n",startIdx(free_idx));
-  return NULL;
-  char* da_restituire = & (alloc->buffer[startIdx(free_idx) * size_start]);
-  int* da_restituire_2=(int*) da_restituire;
-  da_restituire_2[0]=free_idx;
   
+  char* da_restituire = alloc->buffer + startIdx(free_idx) * size_start;
+  ((int*)da_restituire)[0] = free_idx;
   printf("sto restituendo con indice %d il puntatore %p\n", free_idx, da_restituire);
-  //ritorno 4 indirizzi più avanti così da avere l'indice protetto.
-  return (void*)(&da_restituire_2[1]);
+  printf("Bitmap dopo l'allocazione\n");
+  print_bitmap(&alloc->bitmap);
+  return (void *)( da_restituire+sizeof(int));
 }
 
 //releases allocated memory
@@ -198,12 +193,19 @@ void BuddyAllocator_free(BuddyAllocator* alloc, void* mem) {
   int* p=(int*) mem;
   
   int idx_to_free = p[-1];
+  
   printf("indice da liberare %d\n",idx_to_free);
-  // int size_livello = 
-  // //sanity check deve essere un buddy corretto
-  // assert((int*)(alloc->buffer + idx_to_free*alloc->min_bucket_size) == &p[-1]); 
-  mark_all_children(&alloc->bitmap,idx_to_free,0);
+  
+  //sanity check deve essere un buddy corretto
+  //dim di un buddy a quel livello
+  int dim_lvl= alloc->min_bucket_size * (1<<(alloc->num_levels-levelIdx(idx_to_free)));
+  char * p_to_free = alloc->buffer + startIdx(idx_to_free) * dim_lvl;
+  assert((int*) p_to_free == &p[-1]);
+  //bisogna evitare double free
+  assert(BitMap_bit(&alloc->bitmap, idx_to_free) && "Double free");
 
+  mark_all_children(&alloc->bitmap,idx_to_free,0);
   merge_buddies(&alloc->bitmap,idx_to_free);
+  printf("Bitmap dopo la free\n");
   print_bitmap(&alloc->bitmap);
 }
