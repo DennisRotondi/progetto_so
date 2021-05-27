@@ -168,6 +168,8 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size){
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
   printf("\nFreeing %p\n", mem);
+
+  assert(mem && "Non posso fare il free di NULL"); //deve essere diverso da null
   // we retrieve the buddy from the system
   int *p = (int *)mem;
   int idx_to_free = p[-1];
