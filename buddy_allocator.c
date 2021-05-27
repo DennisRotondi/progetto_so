@@ -33,7 +33,7 @@ int startIdx(int idx){
 
 //costosa ma utile per vedere lo stato del bitmap tree
 void print_bitmap(BitMap *bit_map){
-  int to_print = 1;
+  int to_print;
   int remain_to_print = 0;
   int lvl = -1;
   int tot_lvls = levelIdx(bit_map->num_bits) - 1;
