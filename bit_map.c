@@ -18,7 +18,7 @@ void BitMap_init(BitMap* bit_map, int num_bits, char* buffer){ //char è un byte
 void BitMap_setBit(BitMap* bit_map, int bit_num, int status){ // get byte  
   int byte_num=bit_num>>3;
   assert(byte_num<bit_map->buffer_size);
-  int bit_in_byte=bit_num&0x07; //ultimi due bit
+  int bit_in_byte=bit_num&0x07; //ultimi tre bit
   if (status) {
     bit_map->buffer[byte_num] |= (1<<bit_in_byte);
   } else {

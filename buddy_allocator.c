@@ -68,7 +68,7 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
 
   //controllo in più non presente nel codice originale, nel caso non si usi una potenza di 2 precisa si riuscirà ad usare meno memoria della disponibile
   if (levelIdx(buffer_size) != log2(buffer_size)){
-    printf("****ATTENZIONE IL BUFFER NON È UNA POTENZA DI DUE PRECISA E IL BUDDY PER FUNZIONARE AL MEGLIO DEVE ESSERLO,\n");
+    printf("****ATTENZIONE IL BUFFER NON È UNA POTENZA DI DUE PRECISA E IL BUDDY NON LO USERA' A PIENO,\n");
     printf("RIUSCIRAI AD UTILIZZARE SOLAMENTE %d BYTES DI %d FORNITI****\n", min_bucket_size << num_levels, buffer_size);
     buffer_size = min_bucket_size << num_levels; //la dimensione massima effettiva che può gestire
   }
