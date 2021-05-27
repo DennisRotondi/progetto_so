@@ -1,7 +1,7 @@
 #include "buddy_allocator.h"
 #include <stdio.h>
 
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 291
 #define BUDDY_LEVELS 5
 #define MEMORY_SIZE 128
 #define MIN_BUCKET_SIZE (BUFFER_SIZE>>BUDDY_LEVELS)
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   p1=BuddyAllocator_malloc(&alloc, sizeof(int)*9);
   p2=BuddyAllocator_malloc(&alloc, 13);
   p5=BuddyAllocator_malloc(&alloc, sizeof(int));
-  p3=BuddyAllocator_malloc(&alloc, sizeof(int)*12); //20 + 4
+  p3=BuddyAllocator_malloc(&alloc, sizeof(int)*12);
   p4=BuddyAllocator_malloc(&alloc, sizeof(int));
 
   BuddyAllocator_free(&alloc, p4);

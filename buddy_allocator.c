@@ -31,25 +31,31 @@ int firstIdx(int lvl){
   return (1 << lvl) - 1;
 }
 
+void print_spazi(int spazi){
+  for(int i=0; i<spazi;i++) printf(" ");
+}
+
 void print_bitmap(BitMap* bit_map){
   int to_print=1;
   int remain_to_print=1;
   int lvl=0;
+  int tot_lvls= levelIdx(bit_map->num_bits);
   printf("Livello %d (inizia con %d):\t",lvl,lvl);
+  print_spazi((1<<tot_lvls)-(1<<lvl));
   for(int i = 0; i<bit_map->num_bits;i++){  
     remain_to_print--;
     printf("%d ", BitMap_bit(bit_map,i));
     // printf("%da%d ", i, BitMap_bit(bit_map,i));
     if(remain_to_print==0 && i!=bit_map->num_bits-1){
-      printf("\n");
-      printf("Livello %d (inizia con %d):\t",++lvl,i+1);
+      printf("\nLivello %d (inizia con %d):\t",++lvl,i+1);
+      print_spazi((1<<tot_lvls)-(1<<lvl));
       to_print*=2;
       remain_to_print=to_print;
     }    
   }
   printf("\n");  
 }
-
+//per tutte le funzioni si è cercato di mantenere la struttura del codice originale, rendendo di fatto questa una versione alternativa
 void BuddyAllocator_init(BuddyAllocator* alloc,
                          int num_levels,                         
                          char* buffer, //buffer per l'allocator
@@ -61,6 +67,15 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
   // we need room also for level 0
   alloc->num_levels = num_levels;
   alloc->buffer = buffer;
+
+  //controllo in più non presente nel codice originale, nel caso non si usi una potenza di 2 precisa si riuscirà ad usare meno memoria della disponibile
+  if (levelIdx(buffer_size)!=log2(buffer_size)){
+    printf("****ATTENZIONE IL BUFFER NON È UNA POTENZA DI DUE PRECISA E IL BUDDY PER FUNZIONARE AL MEGLIO DEVE ESSERLO,\n");
+    printf("RIUSCIRAI SOLAMENTE AD UTILIZZARE %d BYTES DI %d FORNITI****\n",min_bucket_size<<num_levels,buffer_size);
+
+    buffer_size=min_bucket_size<<num_levels; //la dimensione massima effettiva che può gestire
+  }
+
   alloc->buffer_size = buffer_size;
 
   assert(min_bucket_size>=8); //troppo piccolo altrimenti
