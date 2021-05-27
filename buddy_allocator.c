@@ -100,7 +100,7 @@ void mark_all_parents(BitMap *bit_map, int bit_num, int status){
 }
 
 void mark_all_children(BitMap *bit_map, int bit_num, int status){
-  if (bit_num <= bit_map->num_bits){
+  if (bit_num < bit_map->num_bits){
     BitMap_setBit(bit_map, bit_num, status);
     mark_all_children(bit_map, bit_num * 2 + 1, status);
     mark_all_children(bit_map, bit_num * 2 + 2, status);
