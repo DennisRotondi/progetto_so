@@ -200,7 +200,6 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size)
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem)
 {
-
   printf("\nFreeing %p\n", mem);
   // we retrieve the buddy from the system
   int *p = (int *)mem;
@@ -211,7 +210,7 @@ void BuddyAllocator_free(BuddyAllocator *alloc, void *mem)
   //dim di un buddy a quel livello
   int dim_lvl = alloc->min_bucket_size * (1 << (alloc->num_levels - levelIdx(idx_to_free)));
   char *p_to_free = alloc->buffer + startIdx(idx_to_free) * dim_lvl;
-  assert((int *)p_to_free == &p[-1]);
+  assert(p_to_free == &p[-1]);
   //bisogna evitare double free
   assert(BitMap_bit(&alloc->bitmap, idx_to_free) && "Double free");
 
