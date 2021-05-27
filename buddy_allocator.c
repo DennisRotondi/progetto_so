@@ -34,12 +34,15 @@ int firstIdx(int lvl){
 void print_bitmap(BitMap* bit_map){
   int to_print=1;
   int remain_to_print=1;
+  int lvl=0;
+  printf("Livello %d (inizia con %d):\t",lvl,lvl);
   for(int i = 0; i<bit_map->num_bits;i++){  
     remain_to_print--;
     printf("%d ", BitMap_bit(bit_map,i));
     // printf("%da%d ", i, BitMap_bit(bit_map,i));
-    if(remain_to_print==0){
+    if(remain_to_print==0 && i!=bit_map->num_bits-1){
       printf("\n");
+      printf("Livello %d (inizia con %d):\t",++lvl,i+1);
       to_print*=2;
       remain_to_print=to_print;
     }    
@@ -131,7 +134,6 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
       break;
     }
   }
-
   assert((free_idx>-1) && "Non c'è più memoria disponibile");
 
   mark_all_parents(&bitmap, free_idx , 1);
@@ -150,12 +152,11 @@ void merge_buddies(BitMap* bitmap, int idx){
   if(idx==0) return;
   int idx_buddy = buddyIdx(idx);
   if(!BitMap_bit(bitmap,idx_buddy)){
-    printf("Sto facendo il merge dei buddy %d %d al livello %d\n", idx,idx_buddy,levelIdx(idx));
+    printf("#### Sto facendo il merge dei buddy %d %d al livello %d ####\n", idx,idx_buddy,levelIdx(idx));
     int parent_idx = parentIdx(idx);
     BitMap_setBit(bitmap, parent_idx, 0);
     merge_buddies(bitmap,parent_idx);
-  }
-    
+  }    
 }
 
 //releases allocated memory

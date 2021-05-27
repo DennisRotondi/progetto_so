@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
   //alloco in ordine inverso
   
   p1=BuddyAllocator_malloc(&alloc, sizeof(int)*9);
-  p2=BuddyAllocator_malloc(&alloc, sizeof(int));
+  p2=BuddyAllocator_malloc(&alloc, 13);
   p5=BuddyAllocator_malloc(&alloc, sizeof(int));
   p3=BuddyAllocator_malloc(&alloc, sizeof(int)*12); //20 + 4
   p4=BuddyAllocator_malloc(&alloc, sizeof(int));
@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
   BuddyAllocator_free(&alloc, p1);
   BuddyAllocator_free(&alloc, p2);
   BuddyAllocator_free(&alloc, p3);   
+  BuddyAllocator_free(&alloc, p5);
 } 
 /*
   int bit_num=0;
