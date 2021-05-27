@@ -175,8 +175,7 @@ void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
   int idx_to_free = p[-1];
 
   printf("indice da liberare %d\n", idx_to_free);
-  //sanity check deve essere un buddy corretto
-  //dim di un buddy a quel livello
+  //sanity check deve essere un buddy corretto, calcolo la dim di un buddy a quel livello
   int dim_lvl = alloc->min_bucket_size * (1 << (alloc->num_levels - levelIdx(idx_to_free)));
   char *p_to_free = alloc->buffer + startIdx(idx_to_free) * dim_lvl;
   assert((int *)p_to_free == &p[-1]);

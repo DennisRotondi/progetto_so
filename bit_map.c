@@ -14,10 +14,8 @@ void BitMap_init(BitMap* bit_map, int num_bits, char* buffer){ //char è un byte
   bit_map->buffer_size=BitMap_getBytes(num_bits);
 }
 
-// sets the bit bit_num in the bitmap
-// status = 0 or 1
+// sets the bit bit_num in the bitmap, status = 0 or 1
 void BitMap_setBit(BitMap* bit_map, int bit_num, int status){ // get byte  
-  // printf("mi hanno chiamato");
   int byte_num=bit_num>>3;
   assert(byte_num<bit_map->buffer_size);
   int bit_in_byte=bit_num&0x07; //ultimi due bit
