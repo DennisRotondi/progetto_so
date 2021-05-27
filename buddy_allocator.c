@@ -100,6 +100,7 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
   printf("\tbitmap memory %d bytes usati di %d bytes forniti \n", BitMap_getBytes(num_bits), buffer_bitmap_size);
 
   BitMap_init(&alloc->bitmap, num_bits, buffer_bitmap);
+  printf("Bitmap appena allocata:");
   print_bitmap(&alloc->bitmap);
 };
 
