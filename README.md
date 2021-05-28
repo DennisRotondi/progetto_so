@@ -10,7 +10,7 @@ A tal fine mi sono basato su quanto spiegatoci durante la lezione degli allocato
 ## how 
 
 Ogni volta che voglio allocare un blocco di dimensione size cerco nel livello che contiene i blocchi più piccoli per contenerlo, in caso ce ne sia uno disponibile ritorno il puntatore ad una porzione del buffer assicurandomi di salvare nei -4byte di questo l'indice del bit nella bitmap che rappresenta il buddy, altrimenti segnalo l'impossibilità attraverso una print e ritorno NULL.  
-Per mantenere consistente la bitmap ho fatto in modo che ogni volta che prendo un blocco al livello desiderato setto ad 1, quindi occupati, i bit dei buddy padre (tutti quelli che avrebbero potuto originale il buddy che ho preso partizionandosi) e quelli dei figli (ottenibili partizionandolo), ora il buddy serve in quello stato e non potrà piu' essere partizionato per altri livelli. 
+Per mantenere consistente la bitmap ho fatto in modo che ogni volta che prendo un blocco al livello desiderato setto ad 1, quindi occupati, i bit dei buddy padre (tutti quelli che avrebbero potuto originare il buddy che ho preso partizionandosi) e quelli dei figli (ottenibili partizionandolo), ora il buddy serve in quello stato e non potrà piu' essere partizionato per altri livelli. 
 Quando si fa la free si risale all'indice precedentemente nascosto poco prima dell'indirizzo ritornato e, nel caso sia un indirizzo valido e non si stia facendo una double free, si settera' disponibile lui e tutti i suoi figli, nel caso anche il suo buddy sia libero verrà unito e renderà libero anche suo padre, questo ricorsivamente finché si arriverà alla radice o il padre appena liberato abbia il buddy occupato. 
 
 ## how-to-run
