@@ -37,9 +37,10 @@ void print_bitmap(BitMap *bit_map){
   int remain_to_print = 0;
   int lvl = -1;
   int tot_lvls = levelIdx(bit_map->num_bits) - 1;
-
+  tot_lvls = (tot_lvls>6)? 6 : tot_lvls; //per ragioni di visualizzazione sopra i 6 livelli si occupa troppo spazio, dipende dallo schermo
   for (int i = 0; i < bit_map->num_bits; i++){
-    if (remain_to_print == 0 && i != ((bit_map->num_bits) - 1)){
+    if (remain_to_print == 0 && i != ((bit_map->num_bits) - 1) ){ 
+      if(lvl==tot_lvls) break;
       printf("\nLivello %d (inizia con %d):\t", ++lvl, i);
       for (int j = 0; j < (1 << tot_lvls) - (1 << lvl); j++) printf(" "); //print spazi per formattazione
       to_print = 1 << lvl;
@@ -65,14 +66,12 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
   assert(num_levels < MAX_LEVELS);
   //se non ci sono abbastanza byte per tutti i bit che devo conservare errore
   assert(BitMap_getBytes(num_bits) <= buffer_bitmap_size);
-
   //controllo in più non presente nel codice originale, nel caso non si usi una potenza di 2 precisa si riuscirà ad usare meno memoria della disponibile
   if (levelIdx(buffer_size) != log2(buffer_size)){
     printf("****ATTENZIONE IL BUFFER NON È UNA POTENZA DI DUE PRECISA E IL BUDDY NON LO USERA' A PIENO,\n");
     printf("RIUSCIRAI AD UTILIZZARE SOLAMENTE %d BYTES DI %d FORNITI****\n", min_bucket_size << num_levels, buffer_size);
     buffer_size = min_bucket_size << num_levels; //la dimensione massima effettiva che può gestire
   }
-
   alloc->buffer_size = buffer_size;
   alloc->num_levels = num_levels;
   alloc->buffer = buffer;
