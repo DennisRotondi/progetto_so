@@ -33,18 +33,16 @@ int startIdx(int idx){
 
 //costosa ma utile per vedere lo stato del bitmap tree
 void print_bitmap(BitMap *bit_map){
-  int to_print;
   int remain_to_print = 0;
   int lvl = -1;
   int tot_lvls = levelIdx(bit_map->num_bits) - 1;
   tot_lvls = (tot_lvls>6)? 6 : tot_lvls; //per ragioni di visualizzazione sopra i 6 livelli si occupa troppo spazio, dipende dallo schermo
   for (int i = 0; i < bit_map->num_bits; i++){
-    if (remain_to_print == 0 && i != ((bit_map->num_bits) - 1) ){ 
+    if (remain_to_print == 0){ 
       if(lvl==tot_lvls) break;
       printf("\nLivello %d (inizia con %d):\t", ++lvl, i);
       for (int j = 0; j < (1 << tot_lvls) - (1 << lvl); j++) printf(" "); //print spazi per formattazione
-      to_print = 1 << lvl;
-      remain_to_print = to_print;
+      remain_to_print = 1 << lvl;
     }
     printf("%d ", BitMap_bit(bit_map, i));
     remain_to_print--;
