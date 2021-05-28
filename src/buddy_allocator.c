@@ -88,12 +88,9 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
 };
 
 void mark_all_parents(BitMap *bit_map, int bit_num, int status){
-  if (bit_num == 0)
-    BitMap_setBit(bit_map, bit_num, status);
-  else{
-    BitMap_setBit(bit_map, bit_num, status);
+  BitMap_setBit(bit_map, bit_num, status);
+  if (bit_num != 0)
     mark_all_parents(bit_map, parentIdx(bit_num), status);
-  }
 }
 
 void mark_all_children(BitMap *bit_map, int bit_num, int status){
