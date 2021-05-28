@@ -17,4 +17,4 @@ Quando si fa la free si risale all'indice precedentemente nascosto poco prima de
 
 Il file buddy_allocator_test.c contiene il main e può essere modificato a piacimento pensando di avere, una volta inizializzato, un allocatore che gestisce l'heap. Per compilare usare il makefile e lanciare l'elf generato dalla compilazione per vedere la gestione della memoria.
 
-![alt text](https://i.imgur.com/oWeQUiD.png)
+![Stampa su termianle del programma di test](https://i.imgur.com/oWeQUiD.png)
