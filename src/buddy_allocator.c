@@ -60,10 +60,10 @@ void BuddyAllocator_init(BuddyAllocator *alloc,
   //generazione numero di bit per la bit_map, ogni bit è un buddy di minbucket size
   int num_bits = (1 << (num_levels + 1)) - 1;
   // we need room also for level 0
-  assert(min_bucket_size >= 8); //troppo piccolo altrimenti
-  assert(num_levels < MAX_LEVELS);
+  assert("Min bucket troppo piccolo" && min_bucket_size >= 8); //troppo piccolo altrimenti
+  assert("Il numero di livelli supera il massimo consentito" && num_levels < MAX_LEVELS);
   //se non ci sono abbastanza byte per tutti i bit che devo conservare errore
-  assert(BitMap_getBytes(num_bits) <= buffer_bitmap_size);
+  assert("La memoria fornita per la bitmap non è sufficiente a conservare i bytes necessari" && BitMap_getBytes(num_bits) <= buffer_bitmap_size);
   //controllo in più non presente nel codice originale, nel caso non si usi una potenza di 2 precisa si riuscirà ad usare meno memoria della disponibile
   if (levelIdx(buffer_size) != log2(buffer_size)){
     printf("****ATTENZIONE IL BUFFER NON È UNA POTENZA DI DUE PRECISA E IL BUDDY NON LO USERA' A PIENO,\n");
@@ -102,9 +102,8 @@ void mark_all_children(BitMap *bit_map, int bit_num, int status){
 }
 
 void merge_buddies(BitMap *bitmap, int idx){
-  assert(!BitMap_bit(bitmap, idx)); //deve essere libero
-  if (idx == 0)
-    return;
+  assert("Non puoi fare il merge su un bit libero" && !BitMap_bit(bitmap, idx)); //deve essere libero
+  if (idx == 0) return;
   int idx_buddy = buddyIdx(idx);
   if (!BitMap_bit(bitmap, idx_buddy)){
     printf("Sto facendo il merge dei buddy %d %d al livello %d\n", idx, idx_buddy, levelIdx(idx));
@@ -162,7 +161,7 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size){
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
   printf("\nFreeing %p\n", mem);
 
-  assert(mem && "Non posso fare il free di NULL"); //deve essere diverso da null
+  assert("Non posso fare il free di NULL" && mem); //deve essere diverso da null
   // we retrieve the buddy from the system
   int *p = (int *)mem;
   int idx_to_free = p[-1];
@@ -171,9 +170,9 @@ void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
   //sanity check deve essere un buddy corretto, calcolo la dim di un buddy a quel livello
   int dim_lvl = alloc->min_bucket_size * (1 << (alloc->num_levels - levelIdx(idx_to_free)));
   char *p_to_free = alloc->buffer + startIdx(idx_to_free) * dim_lvl;
-  assert((int *)p_to_free == &p[-1]);
+  assert("Puntatore non allineato" && (int *)p_to_free == &p[-1]);
   //bisogna evitare double free
-  assert(BitMap_bit(&alloc->bitmap, idx_to_free) && "Double free");
+  assert("Double free" && BitMap_bit(&alloc->bitmap, idx_to_free)  );
 
   mark_all_children(&alloc->bitmap, idx_to_free, 0);
   merge_buddies(&alloc->bitmap, idx_to_free);
